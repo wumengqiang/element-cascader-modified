@@ -4,7 +4,8 @@
     :class="[
       {
         'is-opened': menuVisible,
-        'is-disabled': disabled
+        'is-disabled': disabled,
+        'is-multiple': multiple
       },
       size ? 'el-cascader--' + size : ''
     ]"
@@ -17,7 +18,7 @@
     <el-input
       ref="input"
       :readonly="!filterable"
-      :placeholder="currentLabels.length ? undefined : placeholder"
+      :placeholder="(!multiple && currentLabels.length) ? undefined : placeholder"
       v-model="inputValue"
       @change="debouncedInputChange"
       :validate-event="false"
@@ -39,9 +40,9 @@
         ></i>
       </template>
     </el-input>
-    <span class="el-cascader__label" v-show="inputValue === ''">
+    <span class="el-cascader__label" v-show="inputValue === '' && !this.multiple">
       <template v-if="showAllLevels">
-        <template v-for="(label, index) in currentLabels">
+        <template v-for="(label, index) in currentLabels" >
           {{ label }}
           <span v-if="index < currentLabels.length - 1"> / </span>
         </template>
@@ -50,6 +51,16 @@
         {{ currentLabels[currentLabels.length - 1] }}
       </template>
     </span>
+    <!-- <span class="el-cascader__tags" v-show="inputValue === '' && this.multiple">
+        <el-tag
+          v-for='tag in currentLabels'
+          :key='tag.toString()'
+          :closable='true'
+          type='primary'
+          @close='cancelSelect(tag)'>
+            {{showAllLevels ? tag.join(' / ') : tag[tag.length-1]}}
+        </el-tag>
+    </span>  -->
   </span>
 </template>
 
@@ -57,6 +68,7 @@
 import Vue from 'vue';
 import ElCascaderMenu from './menu';
 import ElInput from 'element-ui/packages/input';
+import ElTag from 'element-ui/packages/tag';
 import Popper from 'element-ui/src/utils/vue-popper';
 import Clickoutside from 'element-ui/src/utils/clickoutside';
 import emitter from 'element-ui/src/mixins/emitter';
@@ -88,7 +100,8 @@ export default {
   mixins: [popperMixin, emitter, Locale],
 
   components: {
-    ElInput
+    ElInput,
+    ElTag
   },
 
   props: {
@@ -143,6 +156,10 @@ export default {
     beforeFilter: {
       type: Function,
       default: () => (() => {})
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -169,16 +186,12 @@ export default {
       return this.props.children || 'children';
     },
     currentLabels() {
-      let options = this.options;
-      let labels = [];
-      this.currentValue.forEach(value => {
-        const targetOption = options && options.filter(option => option[this.valueKey] === value)[0];
-        if (targetOption) {
-          labels.push(targetOption[this.labelKey]);
-          options = targetOption[this.childrenKey];
-        }
-      });
-      return labels;
+
+      if(this.multiple) {
+        return this.getMultipleLabels();
+      } else {
+        return this.getCurrentLabels();
+      }
     }
   },
 
@@ -212,6 +225,7 @@ export default {
       this.menu.expandTrigger = this.expandTrigger;
       this.menu.changeOnSelect = this.changeOnSelect;
       this.menu.popperClass = this.popperClass;
+      this.menu.multiple = this.multiple;
       this.popperElm = this.menu.$el;
       this.menu.$on('pick', this.handlePick);
       this.menu.$on('activeItemChange', this.handleActiveItemChange);
@@ -331,6 +345,39 @@ export default {
         return;
       }
       this.menuVisible = !this.menuVisible;
+    },
+    getCurrentLabels () {
+        let options = this.options;
+        let labels = [];
+        this.currentValue.forEach(value => {
+          const targetOption = options && options.filter(option => option[this.valueKey] === value)[0];
+          if (targetOption) {
+            labels.push(targetOption[this.labelKey]);
+            options = targetOption[this.childrenKey];
+          }
+        });
+        return labels;
+    },
+    getMultipleLabels () {
+        let labels = [];
+        this.currentValue.forEach(v => {
+          let options = this.options, label = [];
+          v.forEach(value => {
+              const targetOption = options && 
+              options.filter(option => option[this.valueKey] === value)[0];
+              if (targetOption) {
+                label.push(targetOption[this.labelKey]);
+                options = targetOption[this.childrenKey];
+              }
+          });
+          if(label.length > 0) {
+            labels.push(label);
+          }
+        });
+        return labels;
+    },
+    cancelSelect (tag) {
+
     }
   },
 
