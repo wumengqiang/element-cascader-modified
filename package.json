@@ -4,6 +4,9 @@
   "description": "based on the ElemeFE/element, add multiple select and optimize 'disabled' option",
   "main": "index.js",
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint-config-hfe": "^2.3.0",
+    "eslint-plugin-html": "^3.1.1",
     "gaze": "^1.1.2",
     "gulp": "^3.9.1",
     "gulp-debug": "^3.1.0",
