@@ -1,5 +1,5 @@
 #!/bin/bash
 
 base_dir=$(dirname $0)/../
-eslint ./**/*.js --fix
-eslint ./**/*.vue --fix
+eslint ./src/**/*.js --fix
+eslint ./src/**/*.vue --fix

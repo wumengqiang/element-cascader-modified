@@ -46,8 +46,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
-        exclude: /node_modules/
+        include: [resolve('src'), resolve('test'), resolve('node_modules/element-ui')],
       },
     ]
   },
@@ -55,12 +54,12 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env': '"production"'
       }),
-      // new webpack.optimize.UglifyJsPlugin({
-      //   compress: {
-      //     warnings: false
-      //   },
-      //   sourceMap: true
-      // }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        },
+        sourceMap: true
+      }),
       new ExtractTextPlugin({
         filename: utils.assetsPath('css/[name].css')
       }),
@@ -83,5 +82,13 @@ module.exports = {
       //   name: 'manifest',
       //   chunks: ['vendor']
       // }),
-    ]
+    ],
+    externals: {
+      vue: {
+        root: 'Vue',
+        commonjs: 'vue',
+        commonjs2: 'vue',
+        amd: 'vue'
+      }
+    }
 }
