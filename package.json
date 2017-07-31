@@ -1,6 +1,6 @@
 {
   "name": "element-cascader-modified",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "based on the ElemeFE/element, add multiple select and optimize 'disabled' option",
   "main": "index.js",
   "devDependencies": {
