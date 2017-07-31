@@ -1,0 +1,64 @@
+.is-multiple {
+    min-height: 36px;
+    .is-selected {
+        color: #20a0ff;
+        &.is-active{
+            color: #fff;
+            background-color: #20a0ff;
+        }
+    }
+
+    .el-icon-check {
+        float: right;
+        padding-left: 10px;
+        line-height: 22px;
+    }
+    &.show-values.el-cascader{
+        width: 222px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #bfcbd9;
+        border-radius: 4px;
+        -moz-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+        -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+        transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+        &:hover {
+            border-color: #8391a5;
+        }
+        .el-input__inner {
+            border: 0;
+        }
+
+        .el-cascader__tags {
+            position: relative;
+            max-width: 80%;
+            display: block;
+            text-align: left;
+            margin: 0 50px 0 10px;
+            padding-top: 6px;
+            .el-tag {
+                margin: 0 10px 5px 0;
+            }
+        }
+        .el-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    &.el-input--small.el-cascader {
+        width: 194px;
+        min-height: 30px;
+        .el-input,
+        .el-input__inner {
+            height: 30px;
+        }
+
+        .el-cascader__tags {
+            padding-top: 3px;
+        }
+    }
+
+
+}

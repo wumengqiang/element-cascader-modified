@@ -5,7 +5,8 @@
       {
         'is-opened': menuVisible,
         'is-disabled': disabled,
-        'is-multiple': multiple
+        'is-multiple': multiple,
+        'show-values': showValues
       },
       size ? 'el-cascader--' + size : ''
     ]"
@@ -18,7 +19,7 @@
     <el-input
       ref="input"
       :readonly="!filterable"
-      :placeholder="(!multiple && currentLabels.length) ? undefined : placeholder"
+      :placeholder="(showValues && currentLabels.length) ? undefined : placeholder"
       v-model="inputValue"
       @change="debouncedInputChange"
       :validate-event="false"
@@ -51,7 +52,8 @@
         {{ currentLabels[currentLabels.length - 1] }}
       </template>
     </span>
-    <!-- <span class="el-cascader__tags" v-show="inputValue === '' && this.multiple">
+    <span class="el-cascader__tags" 
+        v-show="inputValue === '' && multiple && showValues">
         <el-tag
           v-for='tag in currentLabels'
           :key='tag.toString()'
@@ -60,7 +62,7 @@
           @close='cancelSelect(tag)'>
             {{showAllLevels ? tag.join(' / ') : tag[tag.length-1]}}
         </el-tag>
-    </span>  -->
+    </span>
   </span>
 </template>
 
@@ -75,6 +77,8 @@ import emitter from 'element-ui/src/mixins/emitter';
 import Locale from 'element-ui/src/mixins/locale';
 import { t } from 'element-ui/src/locale';
 import debounce from 'throttle-debounce/debounce';
+
+import './styles/index.css';
 
 const popperMixin = {
     props: {
@@ -158,6 +162,10 @@ export default {
             default: () => () => {}
         },
         multiple: {
+            type: Boolean,
+            default: false
+        },
+        showValues: {
             type: Boolean,
             default: false
         }
@@ -378,7 +386,11 @@ export default {
             return labels;
         },
         cancelSelect (tag) {
+            this.currentValue = this.currentValue.filter(v => {
 
+            });
+            this.$emit('input', value);
+            this.$emit('change', value);
         }
     },
 
@@ -405,6 +417,10 @@ export default {
                 });
             }
         });
+        if (this.multiple && this.expandTrigger === 'click') {
+            // eslint-disable-next-line no-console
+            console.error("多选模式只在expandTrigger为hover时使用");
+        }
     },
 
     mounted() {

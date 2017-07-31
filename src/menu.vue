@@ -1,7 +1,6 @@
 <script>
   import { isDef } from 'element-ui/src/utils/shared';
   import scrollIntoView from 'element-ui/src/utils/scroll-into-view';
-  import './style/index.css';
   export default {
       name: 'ElCascaderMenu',
 
@@ -12,7 +11,6 @@
               props: {},
               multiple: false,
               visible: false,
-              values: [],
               activeValue: [],
               value: [],
               expandTrigger: 'click',
@@ -78,14 +76,13 @@
 
       methods: {
           valueChange (val) {
-              val = val || this.value;
-              this.values = val;
+              this.value = val || this.value;
               this.activeValue = (this.multiple
-                  ? (this.values[this.values.length - 1] || [])
-                  : this.values).slice(0);
+                  ? (this.value[this.value.length - 1] || [])
+                  : this.value).slice(0);
               if (this.multiple) {
                   this.isSelected = {};
-                  this.values.forEach(value => {
+                  this.value.forEach(value => {
                       if (value && value.length > 0) {
                           this.isSelected[value[value.length - 1]] = true;
                       }
@@ -104,21 +101,21 @@
               let str = this.activeValue.join('');
 
               if (this.multiple) {
-                  let value = this.values.filter(function(v) {
+                  let value = this.value.filter(function(v) {
                       return v.join('') !== str;
                   });
-                  if (value.length === this.values.length) {
-                      this.values.push(this.activeValue.slice(0));
+                  if (value.length === this.value.length) {
+                      this.value.push(this.activeValue.slice(0));
                   } else {
-                      this.values = value;
+                      this.value = value;
                   }
-              } else if (this.values.join('') !== str) {
-                  this.values = this.activeValue;
+              } else if (this.value.join('') !== str) {
+                  this.value = this.activeValue;
               } else {
                   return;
               }
 
-              this.$emit('pick', this.values, !this.multiple);
+              this.$emit('pick', this.value.slice(0), !this.multiple);
           },
           handleMenuLeave() {
               this.$emit('menuLeave');
@@ -179,8 +176,11 @@
                                   this.scrollMenu(this.$refs.menus[menuIndex]);
                                   this.scrollMenu(this.$refs.menus[menuIndex + 1]);
                               });
+                              if (triggerEvent === 'click' && !item.disabled) {
+                                  this.select(item, menuIndex);
+                              }
                           };
-                          if (triggerEvent !== 'click') {
+                          if (triggerEvent !== 'click' && !item.disabled) {
                               events.on.click = () => {
                                   this.select(item, menuIndex);
                               };
