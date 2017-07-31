@@ -93,7 +93,7 @@ const popperMixin = {
 };
 
 export default {
-    name: 'ElCascader',
+    name: 'ElCascaderModified',
 
     directives: { Clickoutside },
 
