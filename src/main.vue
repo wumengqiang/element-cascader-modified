@@ -55,11 +55,11 @@
     <span class="el-cascader__tags" 
         v-show="inputValue === '' && multiple && showValues">
         <el-tag
-          v-for='tag in currentLabels'
+          v-for='(tag, index) in currentLabels'
           :key='tag.toString()'
           :closable='true'
           type='primary'
-          @close='cancelSelect(tag)'>
+          @close='cancelSelect(tag, index)'>
             {{showAllLevels ? tag.join(' / ') : tag[tag.length-1]}}
         </el-tag>
     </span>
@@ -78,7 +78,7 @@ import Locale from 'element-ui/src/mixins/locale';
 import { t } from 'element-ui/src/locale';
 import debounce from 'throttle-debounce/debounce';
 
-import './styles/index.css';
+// import './styles/index.css';
 
 const popperMixin = {
     props: {
@@ -263,7 +263,6 @@ export default {
             this.$emit('active-item-change', value);
         },
         handlePick(value, close = true) {
-            this.currentValue = value;
             this.$emit('input', value);
             this.$emit('change', value);
 
@@ -385,10 +384,13 @@ export default {
             });
             return labels;
         },
-        cancelSelect (tag) {
-            this.currentValue = this.currentValue.filter(v => {
-
+        cancelSelect (tag, index) {
+            // eslint-disable-next-line no-console
+            console.log('tag');
+            const value = this.currentValue.filter(v => {
+                return true;
             });
+            this.menu.value = value.slice(0);
             this.$emit('input', value);
             this.$emit('change', value);
         }
@@ -419,7 +421,7 @@ export default {
         });
         if (this.multiple && this.expandTrigger === 'click') {
             // eslint-disable-next-line no-console
-            console.error("多选模式只在expandTrigger为hover时使用");
+            console.error('多选模式只在expandTrigger为hover时使用');
         }
     },
 
@@ -428,3 +430,6 @@ export default {
     }
 };
 </script>
+<style lang='scss'>
+    @import 'scss/index.scss';
+</style>

@@ -76,13 +76,13 @@
 
       methods: {
           valueChange (val) {
-              this.value = val || this.value;
+              val = val || this.value;
               this.activeValue = (this.multiple
-                  ? (this.value[this.value.length - 1] || [])
-                  : this.value).slice(0);
+                  ? (val[val.length - 1] || [])
+                  : val).slice(0);
               if (this.multiple) {
                   this.isSelected = {};
-                  this.value.forEach(value => {
+                  val.forEach(value => {
                       if (value && value.length > 0) {
                           this.isSelected[value[value.length - 1]] = true;
                       }
@@ -99,18 +99,16 @@
                   this.activeValue = [item.value];
               }
               let str = this.activeValue.join('');
-
+              let value = [];
               if (this.multiple) {
-                  let value = this.value.filter(function(v) {
+                  value = this.value.filter(function(v) {
                       return v.join('') !== str;
                   });
                   if (value.length === this.value.length) {
                       this.value.push(this.activeValue.slice(0));
-                  } else {
-                      this.value = value;
                   }
               } else if (this.value.join('') !== str) {
-                  this.value = this.activeValue;
+                  value = this.activeValue;
               } else {
                   return;
               }

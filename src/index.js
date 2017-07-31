@@ -1,4 +1,4 @@
-import Cascader from './src/main';
+import Cascader from './main';
 
 /* istanbul ignore next */
 Cascader.install = function(Vue) {
