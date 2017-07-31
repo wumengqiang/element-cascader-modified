@@ -12,3 +12,27 @@
 - 如果能够选择任何一级的选项， 那么父级菜单的disabled属性为true, 那么依然能够显示子菜单。 （原先是不能的）
 - 在expand-trigger为hover时， 必须点击选项才能选中值。 （原先是hover上去就会选中值， 导致体验不好）
   
+
+### 使用方式
+
+#### 示例
+```
+<template>
+  <el-cascader-modified
+    :options="options"
+    :show-all-levels="false"
+    expand-trigger="hover"
+    change-on-select
+    v-model="val"
+    multiple
+    clearable
+    filterable
+    show-values
+  ></el-cascader-modified>
+</template>
+<script>
+    import Cascader from 'element-cascader-modified';
+    import  'element-cascader-modified/dist/static/css/index.css';
+    Vue.component(Cascader.name, Cascader);
+</script>
+```
