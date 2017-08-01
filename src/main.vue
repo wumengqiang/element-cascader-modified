@@ -368,7 +368,7 @@ export default {
         },
         getMultipleLabels () {
             let labels = [];
-            this.currentValue.forEach(v => {
+            (this.currentValue || []).forEach(v => {
                 let options = this.options;
                 let label = [];
                 v.forEach(value => {
@@ -386,11 +386,8 @@ export default {
             return labels;
         },
         cancelSelect (tag, index) {
-            // eslint-disable-next-line no-console
-            console.log('tag');
-            const value = this.currentValue.filter(v => {
-                return true;
-            });
+            const value = this.currentValue.slice(0);
+            value.splice(index, 1);
             this.menu.value = value.slice(0);
             this.$emit('input', value);
             this.$emit('change', value);

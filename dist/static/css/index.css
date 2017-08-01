@@ -45,15 +45,15 @@
       left: 0;
       top: 0;
 }
-.is-multiple.el-input--small.el-cascader {
+.is-multiple.el-cascader--small.el-cascader {
     width: 194px;
     min-height: 30px;
 }
-.is-multiple.el-input--small.el-cascader .el-input,
-    .is-multiple.el-input--small.el-cascader .el-input__inner {
+.is-multiple.el-cascader--small.el-cascader .el-input,
+    .is-multiple.el-cascader--small.el-cascader .el-input__inner {
       height: 30px;
 }
-.is-multiple.el-input--small.el-cascader .el-cascader__tags {
+.is-multiple.el-cascader--small.el-cascader .el-cascader__tags {
       padding-top: 3px;
 }
 

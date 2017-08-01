@@ -29,8 +29,6 @@
           value: {
               immediate: true,
               handler(value) {
-                  // eslint-disable-next-line no-console
-                  console.log(value);
                   this.valueChange(value);
               }
           }
@@ -111,7 +109,11 @@
                   }
               } else if (this.value.join('') !== str) {
                   value = this.activeValue;
+              } else {
+                  value = this.value.slice(0);
               }
+
+              this.value = value.slice(0);
 
               this.$emit('pick', value, !this.multiple);
           },
@@ -131,7 +133,7 @@
               this.$nextTick(() => this.$refs.menus.forEach(menu => this.scrollMenu(menu)));
           },
           isActive (value, menuIndex) {
-              if (typeof value === 'string') {
+              if (typeof value !== 'object') {
                   return value === this.activeValue[menuIndex];
               } else if (toString.call(value) === '[object Array]') {
                   let last = value[value.length - 1];
