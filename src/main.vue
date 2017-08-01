@@ -19,7 +19,8 @@
     <el-input
       ref="input"
       :readonly="!filterable"
-      :placeholder="(showValues && currentLabels.length) ? undefined : placeholder"
+      :placeholder="((! multiple || showValues) && currentLabels.length) 
+            ? undefined : placeholder"
       v-model="inputValue"
       @change="debouncedInputChange"
       :validate-event="false"

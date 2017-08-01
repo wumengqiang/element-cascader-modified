@@ -29,6 +29,8 @@
           value: {
               immediate: true,
               handler(value) {
+                  // eslint-disable-next-line no-console
+                  console.log(value);
                   this.valueChange(value);
               }
           }
@@ -105,15 +107,13 @@
                       return v.join('') !== str;
                   });
                   if (value.length === this.value.length) {
-                      this.value.push(this.activeValue.slice(0));
+                      value.push(this.activeValue.slice(0));
                   }
               } else if (this.value.join('') !== str) {
                   value = this.activeValue;
-              } else {
-                  return;
               }
 
-              this.$emit('pick', this.value.slice(0), !this.multiple);
+              this.$emit('pick', value, !this.multiple);
           },
           handleMenuLeave() {
               this.$emit('menuLeave');

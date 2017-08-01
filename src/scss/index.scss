@@ -19,14 +19,13 @@
         overflow: hidden;
         border: 1px solid #bfcbd9;
         border-radius: 4px;
-        -moz-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-        -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
         transition: border-color .2s cubic-bezier(.645,.045,.355,1);
         &:hover {
             border-color: #8391a5;
         }
         .el-input__inner {
             border: 0;
+            transition: none;
         }
 
         .el-cascader__tags {

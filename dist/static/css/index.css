@@ -20,8 +20,6 @@
     overflow: hidden;
     border: 1px solid #bfcbd9;
     border-radius: 4px;
-    -moz-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-    -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 .is-multiple.show-values.el-cascader:hover {
@@ -29,6 +27,7 @@
 }
 .is-multiple.show-values.el-cascader .el-input__inner {
       border: 0;
+      transition: none;
 }
 .is-multiple.show-values.el-cascader .el-cascader__tags {
       position: relative;
