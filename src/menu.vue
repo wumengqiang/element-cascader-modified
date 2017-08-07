@@ -114,8 +114,13 @@
               }
 
               this.value = value.slice(0);
-
-              this.$emit('pick', value, !this.multiple);
+              let close = !this.multiple; // 多选不关闭
+              if (close) { // 非多选情况
+                  if (item.children) { // 如果有子目录不关闭
+                      close = false;
+                  }
+              }
+              this.$emit('pick', value, close);
           },
           handleMenuLeave() {
               this.$emit('menuLeave');
@@ -176,11 +181,13 @@
                                   this.scrollMenu(this.$refs.menus[menuIndex]);
                                   this.scrollMenu(this.$refs.menus[menuIndex + 1]);
                               });
-                              if (triggerEvent === 'click' && !item.disabled) {
+                              if (triggerEvent === 'click' && !item.disabled &&
+                                    this.changeOnSelect) {
                                   this.select(item, menuIndex);
                               }
                           };
-                          if (triggerEvent !== 'click' && !item.disabled) {
+                          if (triggerEvent !== 'click' && !item.disabled &&
+                                this.changeOnSelect) {
                               events.on.click = () => {
                                   this.select(item, menuIndex);
                               };

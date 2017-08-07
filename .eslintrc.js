@@ -3,14 +3,17 @@ module.exports = {
     env: {
         es6: true,
         node: true,
-        browser: true
+        browser: true,
+        mocha: true,
     },
     extends: ['hfe'],
     plugins: [
         'html'
     ],
     globals: {
-        'echarts': true
+        echarts: true,
+        expect: true
+        
     },
     parserOptions: {
         'sourceType': 'module',
@@ -31,6 +34,8 @@ module.exports = {
         'no-else-return': 0,
         'padded-blocks': 0,
         'no-implicit-coercion': 0,
-        'no-empty': 0
+        'no-empty': 0,
+        // 该规则对function和class不起作用
+        'no-use-before-define': [2, { "functions": false, "classes": false }]
     }
 };

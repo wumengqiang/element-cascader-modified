@@ -1,7 +1,8 @@
 restart.sh
 gulpfile.js
 .sass-cache
-
+.chrome
+_karma-webpack_
 
 
 # Logs

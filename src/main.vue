@@ -54,7 +54,7 @@
       </template>
     </span>
     <span class="el-cascader__tags" 
-        v-show="inputValue === '' && multiple && showValues">
+        v-if="inputValue === '' && multiple && showValues">
         <el-tag
           v-for='(tag, index) in currentLabels'
           :key='tag.toString()'
@@ -417,9 +417,9 @@ export default {
                 });
             }
         });
-        if (this.multiple && this.expandTrigger === 'click') {
+        if (this.multiple && this.expandTrigger === 'click' && this.changeOnSelect) {
             // eslint-disable-next-line no-console
-            console.error('多选模式只在expandTrigger为hover时使用');
+            console.error('当处于多选模式并且多级可选时，expandTrigger必须为hover');
         }
     },
 

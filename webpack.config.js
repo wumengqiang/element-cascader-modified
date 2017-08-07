@@ -9,6 +9,7 @@ function resolve (dir) {
 }
 
 module.exports = {
+  context: __dirname,
   entry: {
     index: path.join(__dirname, './src/index.js'),
   },
