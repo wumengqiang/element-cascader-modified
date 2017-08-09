@@ -1,13 +1,17 @@
 
+.el-cascader-menus-modified .is-selected {
+  color: #20a0ff;
+}
+.el-cascader-menus-modified .is-selected.is-active {
+    color: #fff;
+    background-color: #20a0ff;
+}
+.el-cascader-menus-modified .is-active.is-disabled {
+  color: #fff;
+  background-color: #5f97fb;
+}
 .is-multiple {
   min-height: 36px;
-}
-.is-multiple .is-selected {
-    color: #20a0ff;
-}
-.is-multiple .is-selected.is-active {
-      color: #fff;
-      background-color: #20a0ff;
 }
 .is-multiple .el-icon-check {
     float: right;

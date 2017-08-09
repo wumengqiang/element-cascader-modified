@@ -247,6 +247,7 @@
                       v-show={visible}
                       class={[
                           'el-cascader-menus',
+                          'el-cascader-menus-modified',
                           this.multiple ? 'is-multiple' : '',
                           popperClass
                       ]}

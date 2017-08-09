@@ -1,5 +1,4 @@
-.is-multiple {
-    min-height: 36px;
+.el-cascader-menus-modified {
     .is-selected {
         color: #20a0ff;
         &.is-active{
@@ -7,6 +6,15 @@
             background-color: #20a0ff;
         }
     }
+    .is-active.is-disabled {
+        color: #fff;
+        background-color: #5f97fb;
+    }
+}
+
+
+.is-multiple {
+    min-height: 36px;
 
     .el-icon-check {
         float: right;
