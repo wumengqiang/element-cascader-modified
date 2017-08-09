@@ -168,36 +168,34 @@
 
                   if (item.__IS__FLAT__OPTIONS) isFlat = true;
 
-                  if (this.changeOnSelect || !item.disabled) {
-                      if (item.children) {
-                          let triggerEvent = {
-                              click: 'click',
-                              hover: 'mouseenter'
-                          }[expandTrigger];
-                          events.on[triggerEvent] = () => {
-                              this.activeItem(item, menuIndex, triggerEvent);
-                              this.$nextTick(() => {
-                                  // adjust self and next level
-                                  this.scrollMenu(this.$refs.menus[menuIndex]);
-                                  this.scrollMenu(this.$refs.menus[menuIndex + 1]);
-                              });
-                              if (triggerEvent === 'click' && !item.disabled &&
-                                    this.changeOnSelect) {
-                                  this.select(item, menuIndex);
-                              }
-                          };
-                          if (triggerEvent !== 'click' && !item.disabled &&
+                  if (item.children) {
+                      let triggerEvent = {
+                          click: 'click',
+                          hover: 'mouseenter'
+                      }[expandTrigger];
+                      events.on[triggerEvent] = () => {
+                          this.activeItem(item, menuIndex, triggerEvent);
+                          this.$nextTick(() => {
+                              // adjust self and next level
+                              this.scrollMenu(this.$refs.menus[menuIndex]);
+                              this.scrollMenu(this.$refs.menus[menuIndex + 1]);
+                          });
+                          if (triggerEvent === 'click' && !item.disabled &&
                                 this.changeOnSelect) {
-                              events.on.click = () => {
-                                  this.select(item, menuIndex);
-                              };
+                              this.select(item, menuIndex);
                           }
-                      } else if (!item.disabled) {
+                      };
+                      if (triggerEvent !== 'click' && !item.disabled &&
+                            this.changeOnSelect) {
                           events.on.click = () => {
                               this.select(item, menuIndex);
-                              this.$nextTick(() => this.scrollMenu(this.$refs.menus[menuIndex]));
                           };
                       }
+                  } else if (!item.disabled) {
+                      events.on.click = () => {
+                          this.select(item, menuIndex);
+                          this.$nextTick(() => this.scrollMenu(this.$refs.menus[menuIndex]));
+                      };
                   }
                   let selected = false;
                   if (Array.isArray(item.value)) {
