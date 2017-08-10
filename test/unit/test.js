@@ -7,7 +7,7 @@ import { createVue,
     removeEl} from '../utils/index.js';
 
 
-describe('Cascader-modified', () => {
+describe('Cascader-modified basic', () => {
     let vm;
     afterEach(() => {
         destroyVM(vm);

@@ -3,6 +3,7 @@ gulpfile.js
 .sass-cache
 .chrome
 _karma-webpack_
+.vscode
 
 
 # Logs
