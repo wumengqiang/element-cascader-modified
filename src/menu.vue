@@ -89,7 +89,7 @@
                   });
               }
           },
-          select(item, menuIndex) {
+          select(item, menuIndex, expandTrigger) {
               if (item.__IS__FLAT__OPTIONS) {
                   this.activeValue = item.value;
               } else if (menuIndex) {
@@ -114,9 +114,13 @@
               }
 
               this.value = value.slice(0);
+              /*  多选不关闭
+               *  非多选多级可选关闭
+               */
               let close = !this.multiple; // 多选不关闭
-              if (close) { // 非多选情况
-                  if (item.children) { // 如果有子目录不关闭
+              if (close) { // 单选情况
+                  // 如果有子目录且expandTrigger为click时不关闭 ， 否则关闭
+                  if (item.children && expandTrigger === 'click') {
                       close = false;
                   }
               }
@@ -182,18 +186,18 @@
                           });
                           if (triggerEvent === 'click' && !item.disabled &&
                                 this.changeOnSelect) {
-                              this.select(item, menuIndex);
+                              this.select(item, menuIndex, triggerEvent);
                           }
                       };
                       if (triggerEvent !== 'click' && !item.disabled &&
                             this.changeOnSelect) {
                           events.on.click = () => {
-                              this.select(item, menuIndex);
+                              this.select(item, menuIndex, triggerEvent);
                           };
                       }
                   } else if (!item.disabled) {
                       events.on.click = () => {
-                          this.select(item, menuIndex);
+                          this.select(item, menuIndex, 'click');
                           this.$nextTick(() => this.scrollMenu(this.$refs.menus[menuIndex]));
                       };
                   }
