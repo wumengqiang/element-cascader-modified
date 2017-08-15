@@ -47,7 +47,8 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
     "webpack": "^2.6.1",
-    "webpack-bundle-analyzer": "^2.2.1"
+    "webpack-bundle-analyzer": "^2.2.1",
+    "element-ui": "^1.4.0"
   },
   "scripts": {
     "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js"
@@ -66,6 +67,5 @@
     "vue": "^2.4.2"
   },
   "dependencies": {
-    "element-ui": "^1.4.0"
   }
 }
