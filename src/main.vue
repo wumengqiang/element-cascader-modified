@@ -432,6 +432,12 @@ export default {
 
     mounted() {
         this.flatOptions = this.flattenOptions(this.options);
+    },
+
+    beforeDestroy() {
+        if (!this.appendToBody && this.appendEl && this.popperElm) {
+            this.popperElm.parentElement.removeChild(this.popperElm);
+        }
     }
 };
 </script>
