@@ -257,8 +257,37 @@ export default {
             this.menu.options = this.options;
             this.$nextTick(_ => {
                 this.updatePopper();
+                if (!this.popperOptions.onUpdate) {
+                    this.popperJS.onUpdate(this.onUpdate);
+                }
                 this.menu.inputWidth = this.$refs.input.$el.offsetWidth - 2;
             });
+        },
+        onUpdate() { // fixbug 滚动导致的定位不准
+            let node = this.popperJS._reference;
+            let parent = this.getOffsetParent(node);
+            let offsetY = 0;
+            while (node !== parent.parentElement) {
+                node = node.parentElement;
+                offsetY += node.scrollTop;
+            }
+            if (offsetY > 0) {
+                if (this.popperOptions.gpuAcceleration) { // 使用transform
+                    var style = this.popperElm.style.transform;
+                    if (style) {
+                        var matches = style.match(/translate3d\( *(\w+), *(\w+), *(\w+) *\)/i);
+                        var top = parseInt(matches[2]) + offsetY + 'px';
+                        this.popperElm.style.transform = 'translate3d(' + matches[1] + ', ' + top + ', 0)';
+                    }
+                } else {
+                    this.popperElm.style.top = parseInt(this.popperElm.style.top) + offsetY + 'px';
+                }
+            }
+
+        },
+        getOffsetParent(element) {
+            var offsetParent = element.offsetParent;
+            return offsetParent === document.body || !offsetParent ? document.documentElement : offsetParent;
         },
         hideMenu() {
             this.inputValue = '';
