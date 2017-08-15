@@ -88,6 +88,10 @@ const popperMixin = {
             default: 'bottom-start'
         },
         appendToBody: Popper.props.appendToBody,
+        appendEl: {
+            type: String,
+            default: 'body'
+        },
         offset: Popper.props.offset,
         boundariesPadding: Popper.props.boundariesPadding,
         popperOptions: Popper.props.popperOptions
@@ -169,7 +173,7 @@ export default {
         showValues: {
             type: Boolean,
             default: false
-        }
+        },
     },
 
     data() {
@@ -236,6 +240,9 @@ export default {
             this.menu.popperClass = this.popperClass;
             this.menu.multiple = this.multiple;
             this.popperElm = this.menu.$el;
+            if (!this.appendToBody && document.querySelector(this.appendEl)) {
+                document.querySelector(this.appendEl).appendChild(this.popperElm);
+            }
             this.menu.$on('pick', this.handlePick);
             this.menu.$on('activeItemChange', this.handleActiveItemChange);
             this.menu.$on('menuLeave', this.doDestroy);
