@@ -257,26 +257,53 @@ export default {
             this.menu.options = this.options;
             this.$nextTick(_ => {
                 this.updatePopper();
-                if (!this.popperOptions.onUpdate) {
+                if (!this.popperOptions.onUpdate &&
+                    this.popperOptions.preventOverflowOrder &&
+                    this.popperOptions.preventOverflowOrder.indexOf('bottom') === -1 &&
+                    this.popperOptions.preventOverflowOrder.indexOf('top') === -1) {
+                    this.bindScroll = false;
                     this.popperJS.onUpdate(this.onUpdate);
                 }
                 this.menu.inputWidth = this.$refs.input.$el.offsetWidth - 2;
             });
         },
         onUpdate() { // fixbug 滚动导致的定位不准
-            let node = this.popperJS._reference;
-            let parent = this.getOffsetParent(node);
+            let node = this.popperElm;
+            let nodes = [];
             let offsetY = 0;
-            while (node !== parent.parentElement) {
+            while (node !== document.body && node) {
                 node = node.parentElement;
+                if (!node) {
+                    break;
+                }
+                nodes.push(node);
                 offsetY += node.scrollTop;
+                if (node.scrollTop ||
+                    ['scroll', 'auto'].indexOf(window.getComputedStyle(node).overflow) !== -1 ||
+                    ['scroll', 'auto'].indexOf(window.getComputedStyle(node)['overflow-y']) !== -1
+                ) {
+                    if (!this.bindScroll) {
+                        if (node !== document.body && window.getComputedStyle(node).position === 'static') {
+                            // eslint-disable-next-line no-console
+                            // console.error('wish this element have relative position', node);
+                            offsetY -= node.scrollTop;
+                            continue;
+                        } else {
+                            node.addEventListener('scroll', this.popperJS.update.bind(this.popperJS));
+                            this.bindScroll = true;
+                            this.scrollNode = node;
+                        }
+                    }
+                    break;
+                }
             }
+
             if (offsetY > 0) {
                 if (this.popperOptions.gpuAcceleration) { // 使用transform
-                    var style = this.popperElm.style.transform;
+                    let style = this.popperElm.style.transform;
                     if (style) {
-                        var matches = style.match(/translate3d\( *(\w+), *(\w+), *(\w+) *\)/i);
-                        var top = parseInt(matches[2]) + offsetY + 'px';
+                        let matches = style.match(/translate3d\( *(\w+), *(\w+), *(\w+) *\)/i);
+                        let top = parseInt(matches[2]) + offsetY + 'px';
                         this.popperElm.style.transform = 'translate3d(' + matches[1] + ', ' + top + ', 0)';
                     }
                 } else {
@@ -284,10 +311,6 @@ export default {
                 }
             }
 
-        },
-        getOffsetParent(element) {
-            var offsetParent = element.offsetParent;
-            return offsetParent === document.body || !offsetParent ? document.documentElement : offsetParent;
         },
         hideMenu() {
             this.inputValue = '';

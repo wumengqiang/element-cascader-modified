@@ -97,7 +97,7 @@ describe('Cascader-modified basic', () => {
     });
 
     // 单选且能够选择所有级别节点
-    it('basic-all-levels', done => {
+    it('basic-all-levels click menu', done => {
         vm = createDemo({
             changeOnSelect: true,
             expandTrigger: 'hover'
@@ -118,40 +118,10 @@ describe('Cascader-modified basic', () => {
                 setTimeout(() => {
                     let className = sel('.el-cascader-menus').className;
                     // 没有处于离开动画 但是此时有zoom in动画 ，所以不能靠zoom判断
-                    expect(className).to.not.include('leave');
+                    expect(className).to.include('leave');
                     expect(vm.selectedOptions.length).to.equal(1);
                     expect(vm.selectedOptions).have.ordered
                         .members(['zhejiang']);
-                    resolve();
-                });
-            });
-        }).then(() => {
-            let menus = selAll('.el-cascader-menu');
-            expect(menus.length).to.equal(2);
-            menus[1].querySelector('.el-cascader-menu__item').click();
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    let className = sel('.el-cascader-menus').className;
-                    // 没有处于离开动画 但是此时有zoom in动画 ，所以不能靠zoom判断
-                    expect(className).to.not.include('leave');
-                    expect(vm.selectedOptions.length).to.equal(2);
-                    expect(vm.selectedOptions).have.ordered
-                        .members(['zhejiang', 'hangzhou']);
-                    resolve();
-                });
-            });
-        }).then(() => {
-            let menus = selAll('.el-cascader-menu');
-            expect(menus.length).to.equal(3);
-            menus[2].querySelector('.el-cascader-menu__item').click();
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    let className = sel('.el-cascader-menus').className;
-                    // 处于离开动画 但是此时有zoom in动画 ，所以不能靠zoom判断
-                    expect(className).to.include('leave');
-                    expect(vm.selectedOptions.length).to.equal(3);
-                    expect(vm.selectedOptions).have.ordered
-                        .members(['zhejiang', 'hangzhou', 'xihu']);
                     resolve();
                 });
             });
